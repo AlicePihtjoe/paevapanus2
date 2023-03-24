@@ -1,15 +1,20 @@
 import React from 'react';
 import Navbar from '../components/Navbar';
-
+import Link from 'next/link';
 
 const HomePage = () => {
     return (
         <div>
             <Navbar />
-            <h1>Welcome to Next.js!</h1>
-            <h2>
-                <a href="/signup">Sign Up</a>
-            </h2>
+            <h1 className="flex items-center py-4 justify-center">Welcome to Päevapanus homepage!</h1>
+            <h2 className="flex items-center py-4 justify-center">This is a betting Webpage in progress.</h2>
+                <div className="flex items-center justify-center">
+                    <Link href="/signup">
+                        <button className="bg-indigo-600 text-white py-2 px-3 rounded hover:bg-indigo-700 cursor-pointer">
+                            Sign Up
+                        </button>
+                    </Link>
+                </div>
         </div>
     );
 };
