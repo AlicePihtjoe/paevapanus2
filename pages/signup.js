@@ -5,9 +5,9 @@ import SignupForm from '../components/SignupForm';
 
 const SignupPage = () => {
     return (
-        <div className="min-h-screen bg-gray-100 flex items-center">
+        <div className="min-h-screen bg-gray-100 block items-center">
             <Navbar />
-            <div className="container mx-auto max-w-md">
+            <div>
                 <SignupForm />
             </div>
         </div>
