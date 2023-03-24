@@ -26,6 +26,8 @@ const Navbar = () => {
         nav {
           background-color: #f8f8f8;
           padding: 1rem;
+          display: block;
+          color: aliceblue;
         }
         ul {
           display: flex;
@@ -35,6 +37,10 @@ const Navbar = () => {
         }
         li {
           margin-right: 1rem;
+        }
+        li:hover {
+          margin-right: 1rem;
+          color: lightgrey;
         }
         li:last-child {
           margin-right: 0;
