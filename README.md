@@ -25,12 +25,15 @@ DB_NAME=your_database_name
 DB_USER=your_database_user
 DB_PASSWORD=your_database_password
 
+5. npx prisma migrate dev
+
+
 Replace `your_database_host`, `your_database_name`, `your_database_user`, and `your_database_password` with your actual database credentials.
 
 ## Run the app
 
-Start the development server: npm run dev
 
+Start the development server: npm run dev
 Open your browser and visit http://localhost:3000 to see the app in action.
 
 ## PivotalTracker link
