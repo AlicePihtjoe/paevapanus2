@@ -37,7 +37,7 @@ describe('Signup', () => {
         cy.visit('/signup')
         cy.get('[name="name"]').type('test')
         cy.get('[name="email"]').type('a@a')
-        cy.get('[name="password"]').type('a')
+        cy.get('[name="password"]').type('aaaaaaaaaaaaaa')
         cy.get('[type="submit"]').click()
         cy.url().should('include', '/betting')
     })

@@ -24,6 +24,11 @@ how to create a responsive and visually appealing web application.
 2. Run the database script in Powershell: `./start-db.sh` to start the database and load the data.
 3. Open your browser and visit http://localhost:3000 to see the app in action.
 
+## Run the tests
+
+1. Start the development server: `npm run dev`
+2. Run the tests: `npm test`
+
 ## PivotalTracker link
 
 https://www.pivotaltracker.com/n/projects/2634714
