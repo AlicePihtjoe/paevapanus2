@@ -1,4 +1,3 @@
-
 // POST /api/users
 
 import { PrismaClient } from '@prisma/client';

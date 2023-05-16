@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from '../components/Navbar';
 import Link from 'next/link';
 
+
 const HomePage = () => {
     return (
         <div>
@@ -12,6 +13,12 @@ const HomePage = () => {
                     <Link href="/signup">
                         <button className="bg-indigo-600 text-white py-2 px-3 rounded hover:bg-indigo-700 cursor-pointer">
                             Sign Up
+                        </button>
+                    </Link>
+                    <p className="px-3">OR</p>
+                    <Link href="/signin">
+                        <button className="bg-indigo-600 text-white py-2 px-3 rounded hover:bg-indigo-700 cursor-pointer">
+                            Sign In
                         </button>
                     </Link>
                 </div>
