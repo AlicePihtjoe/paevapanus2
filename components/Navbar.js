@@ -1,4 +1,16 @@
 import React from 'react';
+import axios from 'axios';
+
+async function handleSignOut() {
+    try {
+        await axios.post('/api/signout');
+        alert('Logged out successfully!');
+        // Redirect to the login page or do other post-logout actions
+    } catch (error) {
+        alert('Error logging out: ' + error.response?.data?.message || error.message);
+        console.error('Error logging out:', error.response?.data?.message || error.message);
+    }
+}
 
 const Navbar = () => {
     return (
@@ -15,9 +27,17 @@ const Navbar = () => {
                     </a>
                 </li>
                 <li>
+                    <a href="/signin">
+                        Sign In
+                    </a>
+                </li>
+                <li>
                     <a href="/betting">
                         Betting
                     </a>
+                </li>
+                <li>
+                    <button onClick={handleSignOut}>Sign Out</button>
                 </li>
             </ul>
 
