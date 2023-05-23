@@ -26,7 +26,7 @@ how to create a responsive and visually appealing web application.
 
 ## Run the tests
 
-1. Start the development server: `npm run dev`
+1. Start the development server: `node server.js`
 2. Run the tests: `npm test`
 
 ## PivotalTracker link

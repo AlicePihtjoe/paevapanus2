@@ -2,7 +2,7 @@ import {Given, Then, When} from "@badeball/cypress-cucumber-preprocessor";
 
 let email = "a@a.ee";
 Given(/^the user is on the sign\-up page$/, function () {
-    cy.visit("http://localhost:3000/signup");
+    cy.visit("https://localhost:3000/signup");
 });
 When(/^the user enters a valid name, email and password$/, function () {
     // Generate a random email address
