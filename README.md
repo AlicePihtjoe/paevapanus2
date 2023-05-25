@@ -9,6 +9,18 @@ how to create a responsive and visually appealing web application.
 
 - Node.js (version 12 or higher)
 
+HTTPS SSL certificate is required for the app to work properly.
+To generate a self-signed certificate, run the following commands in your terminal (in the project directory):
+
+1. Generate key
+`openssl genrsa -out key.pem`
+
+2. Generate a certificate signing request
+`openssl req -new -key key.pem -out csr.pem`
+
+3. Generate a self-signed certificate
+`openssl x509 -req -days 9999 -in csr.pem -signkey key.pem -out cert.pem`
+
 ## Installation
 
 1. Open your terminal and clone the repository from GitHub:
@@ -20,7 +32,7 @@ how to create a responsive and visually appealing web application.
 
 ## Run the app
 
-1. Start the development server: `npm run dev`
+1. Start the development server: `node server.js`
 2. Run the database script in Powershell: `./start-db.sh` to start the database and load the data.
 3. Open your browser and visit http://localhost:3000 to see the app in action.
 
