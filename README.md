@@ -21,6 +21,12 @@ To generate a self-signed certificate, run the following commands in your termin
 3. Generate a self-signed certificate
 `openssl x509 -req -days 9999 -in csr.pem -signkey key.pem -out cert.pem`
 
+4. In order to use OAuth2, you need to create a Google API project and set up OAuth2 credentials.
+   Follow the instructions here: https://developers.google.com/identity/protocols/oauth2. After you have created the credentials, add Google Client ID and Google Client Secret to the .env file as follows:
+
+`GOOGLE_CLIENT_ID=your_client_id`,
+`GOOGLE_CLIENT_SECRET=your_client_secret`
+
 ## Installation
 
 1. Open your terminal and clone the repository from GitHub:

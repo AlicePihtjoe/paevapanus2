@@ -1,25 +1,25 @@
-const { createServer } = require('https');
-const { parse } = require('url');
+const {createServer} = require('https');
+const {parse} = require('url');
 const next = require('next');
 const fs = require('fs');
 const path = require('path');
-const { Server } = require('socket.io');
+const {Server} = require('socket.io');
 
 const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev });
+const app = next({dev});
 const handle = app.getRequestHandler();
 
 // Set the path to the certificate and private key
 const sslOptions = {
     key: fs.readFileSync(path.join(__dirname, 'key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, 'cert.pem'))
+    cert: fs.readFileSync(path.join(__dirname, 'cert.pem')),
 };
 
 app.prepare().then(() => {
     const server = createServer(sslOptions, (req, res) => {
         const parsedUrl = parse(req.url, true);
         handle(req, res, parsedUrl);
-    }).listen(3000, err => {
+    }).listen(3000, (err) => {
         if (err) throw err;
         console.log('> Ready on https://localhost:3000');
     });
@@ -37,11 +37,6 @@ app.prepare().then(() => {
 
     io.on('connection', (socket) => {
         console.log('Client connected');
-
-        // socket.on('new_message', (msg) => {
-        //     console.log('New message from client: ', msg);
-        //     io.emit('new_message', msg);
-        // });
 
         socket.on('new_topic', (topic) => {
             console.log('New topic from client: ', topic);
