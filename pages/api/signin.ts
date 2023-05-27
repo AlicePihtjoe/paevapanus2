@@ -13,8 +13,8 @@ interface RequestBody {
 const prisma = new PrismaClient();
 
 const client = new OAuth2Client({
-    clientId: '946650179071-j4vaq85486sa8m9djjf41ef39biflq3j.apps.googleusercontent.com',
-    clientSecret: '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',
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     redirectUri: 'https://localhost:3000/auth/google/callback',
 });
 

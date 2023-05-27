@@ -2,16 +2,14 @@
 
 import React from 'react';
 import Navbar from '../components/Navbar';
-import { useRouter } from 'next/router';
 import SigninForm from '../components/SigninForm';
 
 const SigninPage = () => {
-    const router = useRouter();
 
     const handleGoogleSignIn = () => {
         const googleResponse = window.location.href =
             'https://accounts.google.com/o/oauth2/v2/auth' +
-            '?client_id=946650179071-j4vaq85486sa8m9djjf41ef39biflq3j.apps.googleusercontent.com' +
+            '?client_id=' + process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID +
             '&response_type=code' +
             '&scope=openid%20email%20profile' +
             '&redirect_uri=https://localhost:3000/api/exchange_code';

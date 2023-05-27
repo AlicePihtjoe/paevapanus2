@@ -5,6 +5,14 @@ featuring a sign-up form and a betting page.
 The project uses Tailwind CSS for styling and demonstrates
 how to create a responsive and visually appealing web application.
 
+## Installation
+
+1. Open your terminal and clone the repository from GitHub:
+   `git clone https://github.com/AlicePihtjoe/paevapanus2.git`
+
+2. Install the dependencies: `npm install`
+3. To Create the database run: `npx prisma migrate dev`
+
 ## Prequisities
 
 - Node.js (version 12 or higher)
@@ -21,20 +29,27 @@ To generate a self-signed certificate, run the following commands in your termin
 3. Generate a self-signed certificate
 `openssl x509 -req -days 9999 -in csr.pem -signkey key.pem -out cert.pem`
 
-4. In order to use OAuth2, you need to create a Google API project and set up OAuth2 credentials.
-   Follow the instructions here: https://developers.google.com/identity/protocols/oauth2. After you have created the credentials, add Google Client ID and Google Client Secret to the .env file as follows:
+In order to use OAuth2, you need to create a Google API project and set up OAuth2 credentials. For detailed Google OAuth setup instructions, see GoogleOAuthSetup.md.
 
-`GOOGLE_CLIENT_ID=your_client_id`,
-`GOOGLE_CLIENT_SECRET=your_client_secret`
+- Go to https://console.developers.google.com/ and create a new project.
+- Go to the Credentials tab and click on the Create credentials button.
+- Select OAuth client ID.
+- Select Web application.
+- Enter a name for the OAuth2 client.
+- Add http://localhost:3000 to the Authorized JavaScript origins.
+- Add http://localhost:3000/api/exchange_code to the Authorized redirect URIs.
+- Click on the Create button.
+- Copy the Client ID and Client Secret and paste them into the .env.local file as follows:
+- 
+- GOOGLE_CLIENT_ID=your-client-id
+- GOOGLE_CLIENT_SECRET=your-client-secret
+- NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-client-id
 
-## Installation
+replace your-client-id and your-client-secret with the values you copied from the Google API Console.
 
-1. Open your terminal and clone the repository from GitHub:
-`git clone https://github.com/AlicePihtjoe/paevapanus2.git`
+Note that the activation of the Google API project may take up to few hours.
 
-2. Navigate to the project directory: `cd paevapanus2`
-3. Install the dependencies: `npm install`
-4. To Create the database run: `npx prisma migrate dev` 
+
 
 ## Run the app
 
