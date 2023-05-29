@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 
@@ -39,7 +39,7 @@ function SignInForm() {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+                <div className="bg-gray-100 flex items-center justify-center">
                     <div className="bg-white p-6 rounded-lg shadow-md w-80">
                         <h1 className="text-2xl font-semibold mb-6 text-center">Sign In</h1>
                         <div className="mb-4">

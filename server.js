@@ -38,11 +38,6 @@ app.prepare().then(() => {
     io.on('connection', (socket) => {
         console.log('Client connected');
 
-        // socket.on('new_message', (msg) => {
-        //     console.log('New message from client: ', msg);
-        //     io.emit('new_message', msg);
-        // });
-
         socket.on('new_topic', (topic) => {
             console.log('New topic from client: ', topic);
             io.emit('new_topic', topic);
