@@ -5,6 +5,14 @@ featuring a sign-up form and a betting page.
 The project uses Tailwind CSS for styling and demonstrates
 how to create a responsive and visually appealing web application.
 
+## Installation
+
+1. Open your terminal and clone the repository from GitHub:
+   `git clone https://github.com/AlicePihtjoe/paevapanus2.git`
+
+2. Install the dependencies: `npm install`
+3. To Create the database run: `npx prisma migrate dev`
+
 ## Prequisities
 
 - Node.js (version 12 or higher)
@@ -21,20 +29,14 @@ To generate a self-signed certificate, run the following commands in your termin
 3. Generate a self-signed certificate
 `openssl x509 -req -days 9999 -in csr.pem -signkey key.pem -out cert.pem`
 
-## Installation
+## In order to use OAuth2, you need to create a Google API project and set up OAuth2 credentials. 
+For Google OAuth setup instructions, see file **GoogleOAuthSetup.md**
 
-1. Open your terminal and clone the repository from GitHub:
-`git clone https://github.com/AlicePihtjoe/paevapanus2.git`
-
-2. Navigate to the project directory: `cd paevapanus2`
-3. Install the dependencies: `npm install`
-4. To Create the database run: `npx prisma migrate dev` 
 
 ## Run the app
 
 1. Start the development server: `node server.js`
-2. Run the database script in Powershell: `./start-db.sh` to start the database and load the data.
-3. Open your browser and visit http://localhost:3000 to see the app in action.
+2. Open your browser and visit https://localhost:3000 to see the app in action.
 
 ## Run the tests
 

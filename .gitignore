@@ -3,4 +3,4 @@ node_modules/
 .next/
 cert.pem
 key.pem
-.env
+csr.pem

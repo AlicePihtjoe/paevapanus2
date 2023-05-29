@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
+import { OAuth2Client } from 'google-auth-library';
 
 interface RequestBody {
     email: string;
@@ -11,10 +12,13 @@ interface RequestBody {
 
 const prisma = new PrismaClient();
 
-export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse
-) {
+const client = new OAuth2Client({
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    redirectUri: 'https://localhost:3000/auth/google/callback',
+});
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { method, body } = req;
 
     switch (method) {
@@ -22,15 +26,24 @@ export default async function handler(
             try {
                 const { email, password } = body as RequestBody;
 
+                // Check if it's a Google login request
+                if (email === 'google-login') {
+                    // Redirect the user to the Google sign-in page
+                    const url = client.generateAuthUrl({
+                        access_type: 'offline',
+                        scope: ['profile', 'email'],
+                    });
+                    res.redirect(url);
+                    return;
+                }
+
                 // Find user
                 const user = await prisma.user.findUnique({ where: { email } });
-                if (!user)
-                    return res.status(400).json({ message: 'Invalid email or password' });
+                if (!user) return res.status(400).json({ message: 'Invalid email or password' });
 
                 // Check password
                 const isMatch = await bcrypt.compare(password, user.password);
-                if (!isMatch)
-                    return res.status(400).json({ message: 'Invalid email or password' });
+                if (!isMatch) return res.status(400).json({ message: 'Invalid email or password' });
 
                 // Create JWT
                 const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
