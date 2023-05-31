@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { io } from "socket.io-client";
 import Navbar from '../components/Navbar';
+import { useAuth } from '../contexts/AuthContext';
 
 const BettingPage = () => {
     const [socket, setSocket] = useState(null);
     const [topics, setTopics] = useState(['Football', 'Basketball', 'Cricket', 'Tennis', 'Baseball']);
     const [myTopics, setMyTopics] = useState([]);
+    const { isAuthenticated, isLoading } = useAuth();
 
     useEffect(() => {
         const newSocket = io("https://localhost:3000");
@@ -34,6 +36,24 @@ const BettingPage = () => {
     const removeTopic = (topic) => {
         socket.emit('remove_topic', topic);
     };
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (!isAuthenticated) {
+        return (
+            <div>
+                <Navbar />
+                <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-2">
+                    <h1 className="text-3xl font-bold mb-4">Betting Page</h1>
+                    <div className="w-full max-w-md bg-white rounded shadow-md p-4 mb-4">
+                        <h2 className="text-2xl font-semibold mb-2">Please log in to see the topics</h2>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div>

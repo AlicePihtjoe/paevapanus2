@@ -16,6 +16,16 @@ model User {
   name      String?
   password  String
   googleId  String?  @unique
+  topics    Topic[]
+}
+
+model Topic {
+  id        Int      @id @default(autoincrement())
+  name      String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  dateAdded DateTime @default(now())
+  isFavorite Boolean  @default(false)
 }
 
 
