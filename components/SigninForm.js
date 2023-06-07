@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { useAuth } from "../contexts/AuthContext";
 
 function SignInForm() {
     const [formData, setFormData] = useState({
@@ -9,9 +10,8 @@ function SignInForm() {
     });
 
     const [message, setMessage] = useState("");
-
     const router = useRouter();
-
+    const { setIsAuthenticated } = useAuth();
     const handleChange = (event) => {
         setFormData({ ...formData, [event.target.name]: event.target.value });
     };
@@ -21,13 +21,13 @@ function SignInForm() {
 
         try {
             await axios.post("/api/signin", formData);
+            setIsAuthenticated(true);
+
             // Redirect to the betting page after successful login
             await router.push("/betting");
 
             // After successful login
             setMessage("Logged in successfully!");
-
-            // alert("Logged in successfully!");
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.message;
             alert("Error logging in: " + errorMessage);
