@@ -56,6 +56,7 @@ const BettingPage = () => {
     const [currentTopic, setCurrentTopic] = useState(null);
     const { isAuthenticated, isLoading, user } = useAuth();
 
+
     const [topicDetails, setTopicDetails] = useState({
         'Football': 'Details about Football',
         'Basketball': 'Details about Basketball',
@@ -64,6 +65,8 @@ const BettingPage = () => {
         'Baseball': 'Details about Baseball',
     });
 
+    const [editing, setEditing] = useState(false);
+    const [editedDetails, setEditedDetails] = useState('');
 
     useEffect(() => {
         const newSocket = io('https://localhost:3000');
@@ -79,6 +82,8 @@ const BettingPage = () => {
         });
         setSocket(newSocket);
 
+        // Call the getAllTopics function to fetch all topics when the page loads
+        getAllTopicDetails();
 
         return () => {
             newSocket.disconnect();
@@ -103,12 +108,63 @@ const BettingPage = () => {
         localStorage.setItem('topicDetails', JSON.stringify(topicDetails));
     }, [myTopics, topics, topicDetails]);
 
+    // Fetch topic details from server
+
+    const getAllTopicDetails = async () => {
+        try {
+            if (myTopics.length === 0) {
+                // Skip fetching topic details if there are no topics in "My Topics"
+                return;
+            }
+
+            const response = await fetch('/api/topics', { method: 'GET' });
+
+            if (response.ok) {
+                const topics = await response.json();
+
+                // Create an object of topic details using the response data
+                const details = {};
+                topics.forEach((topic) => {
+                    details[topic.name] = topic.description;
+                });
+
+                // Update the topicDetails state with the fetched topic details
+                setTopicDetails(details);
+
+                console.log('Got all topic details:', details);
+            } else {
+                throw new Error('Error getting topic details');
+            }
+        } catch (error) {
+            console.error('Error getting topic details:', error);
+        }
+    };
 
     const openModal = (topic) => {
         setCurrentTopic(topic);
         setModalOpen(true);
     };
 
+    const startEditing = (topic) => {
+        setEditing(true);
+        setEditedDetails(topicDetails[topic]);
+    };
+
+    const stopEditing = async (newDetails) => {
+        setEditing(false);
+        setTopicDetails({
+            ...topicDetails,
+            [currentTopic]: newDetails,
+        });
+
+        // after updating the state, make a PUT request to the server
+
+        try {
+            await updateTopic(currentTopic, newDetails);
+        } catch (error) {
+            console.error('Error updating topic:', error);
+        }
+    };
 
     const addTopic = async (topic) => {
         try {
@@ -129,7 +185,6 @@ const BettingPage = () => {
                 const newTopic = await response.json();
                 socket.emit('new_topic', newTopic.name);
 
-                await logEvent(`User ${user.name} added a new topic ${newTopic.name} at ${new Date().toISOString()}`);
             } else {
                 throw new Error('Error creating topic');
             }
@@ -146,12 +201,36 @@ const BettingPage = () => {
             if (response.ok) {
                 socket.emit('remove_topic', topic);
 
-                await logEvent(`User ${user.name} removed ${topic} at ${new Date().toISOString()}`);
             } else {
                 throw new Error('Error removing topic');
             }
         } catch (error) {
             console.error('Error removing topic:', error);
+        }
+    };
+
+    // update topic function
+
+    const updateTopic = async (name, description) => {
+        try {
+            const response = await fetch('/api/topics', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name, description }),
+            });
+
+            if (response.ok) {
+                const updatedTopic = await response.json();
+                console.log('Updated topic:', updatedTopic);
+
+
+            } else {
+                throw new Error('Error updating topic');
+            }
+        } catch (error) {
+            console.error('Error updating topic:', error);
         }
     };
 
