@@ -4,3 +4,5 @@ node_modules/
 cert.pem
 key.pem
 csr.pem
+.env
+dev.db
