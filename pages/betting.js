@@ -56,18 +56,6 @@ const BettingPage = () => {
     const [currentTopic, setCurrentTopic] = useState(null);
     const { isAuthenticated, isLoading, user } = useAuth();
 
-    const logEvent = async (message) => {
-        try {
-            await fetch('/api/log', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message }),
-            });
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
     const [topicDetails, setTopicDetails] = useState({
         'Football': 'Details about Football',
         'Basketball': 'Details about Basketball',
@@ -76,8 +64,6 @@ const BettingPage = () => {
         'Baseball': 'Details about Baseball',
     });
 
-    // const [editing, setEditing] = useState(false);
-    // const [editedDetails, setEditedDetails] = useState('');
 
     useEffect(() => {
         const newSocket = io('https://localhost:3000');
@@ -93,89 +79,36 @@ const BettingPage = () => {
         });
         setSocket(newSocket);
 
-        // // Call the getAllTopics function to fetch all topics when the page loads
-        // getAllTopicDetails();
 
         return () => {
             newSocket.disconnect();
         };
     }, []);
 
-    // useEffect(() => {
-    //     if (localStorage.getItem('topics')) {
-    //         setTopics(JSON.parse(localStorage.getItem('topics')));
-    //     }
-    //     if (localStorage.getItem('myTopics')) {
-    //         setMyTopics(JSON.parse(localStorage.getItem('myTopics')));
-    //     }
-    //     if (localStorage.getItem('topicDetails')) {
-    //         setTopicDetails(JSON.parse(localStorage.getItem('topicDetails')));
-    //     }
-    // }, []);
+    useEffect(() => {
+        if (localStorage.getItem('topics')) {
+            setTopics(JSON.parse(localStorage.getItem('topics')));
+        }
+        if (localStorage.getItem('myTopics')) {
+            setMyTopics(JSON.parse(localStorage.getItem('myTopics')));
+        }
+        if (localStorage.getItem('topicDetails')) {
+            setTopicDetails(JSON.parse(localStorage.getItem('topicDetails')));
+        }
+    }, []);
 
-    // useEffect(() => {
-    //     localStorage.setItem('topics', JSON.stringify(topics));
-    //     localStorage.setItem('myTopics', JSON.stringify(myTopics));
-    //     localStorage.setItem('topicDetails', JSON.stringify(topicDetails));
-    // }, [myTopics, topics, topicDetails]);
+    useEffect(() => {
+        localStorage.setItem('topics', JSON.stringify(topics));
+        localStorage.setItem('myTopics', JSON.stringify(myTopics));
+        localStorage.setItem('topicDetails', JSON.stringify(topicDetails));
+    }, [myTopics, topics, topicDetails]);
 
-    // Fetch topic details from the server
-
-    // const getAllTopicDetails = async () => {
-    //     try {
-    //         if (myTopics.length === 0) {
-    //             // Skip fetching topic details if there are no topics in "My Topics"
-    //             return;
-    //         }
-    //
-    //         const response = await fetch('/api/topics', { method: 'GET' });
-    //
-    //         if (response.ok) {
-    //             const topics = await response.json();
-    //
-    //             // Create an object of topic details using the response data
-    //             const details = {};
-    //             topics.forEach((topic) => {
-    //                 details[topic.name] = topic.description;
-    //             });
-    //
-    //             // Update the topicDetails state with the fetched topic details
-    //             setTopicDetails(details);
-    //
-    //             console.log('Got all topic details:', details);
-    //         } else {
-    //             throw new Error('Error getting topic details');
-    //         }
-    //     } catch (error) {
-    //         console.error('Error getting topic details:', error);
-    //     }
-    // };
 
     const openModal = (topic) => {
         setCurrentTopic(topic);
         setModalOpen(true);
     };
 
-    // const startEditing = (topic) => {
-    //     setEditing(true);
-    //     setEditedDetails(topicDetails[topic]);
-    // };
-
-    // const stopEditing = async (newDetails) => {
-    //     setEditing(false);
-    //     setTopicDetails({
-    //         ...topicDetails,
-    //         [currentTopic]: newDetails,
-    //     });
-    //
-    //     // after updating the state, make a PUT request to the server
-    //
-    //     try {
-    //         await updateTopic(currentTopic, newDetails);
-    //     } catch (error) {
-    //         console.error('Error updating topic:', error);
-    //     }
-    // };
 
     const addTopic = async (topic) => {
         try {
@@ -205,48 +138,22 @@ const BettingPage = () => {
         }
     };
 
-    // const removeTopic = async (topic) => {
-    //     try {
-    //         const response = await fetch(`/api/topics?topic=${topic}`, {
-    //             method: 'DELETE',
-    //         });
-    //         if (response.ok) {
-    //             socket.emit('remove_topic', topic);
-    //
-    //             await logEvent(`User ${user.name} removed ${topic} at ${new Date().toISOString()}`);
-    //         } else {
-    //             throw new Error('Error removing topic');
-    //         }
-    //     } catch (error) {
-    //         console.error('Error removing topic:', error);
-    //     }
-    // };
+    const removeTopic = async (topic) => {
+        try {
+            const response = await fetch(`/api/topics?topic=${topic}`, {
+                method: 'DELETE',
+            });
+            if (response.ok) {
+                socket.emit('remove_topic', topic);
 
-    // // update topic function
-    //
-    // const updateTopic = async (name, description) => {
-    //     try {
-    //         const response = await fetch('/api/topics', {
-    //             method: 'PUT',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ name, description }),
-    //         });
-    //
-    //         if (response.ok) {
-    //             const updatedTopic = await response.json();
-    //             console.log('Updated topic:', updatedTopic);
-    //
-    //             await logEvent(`User ${user.name} updated "${name}" description to "${updatedTopic.description}" at ${new Date().toISOString()}`);
-    //
-    //         } else {
-    //             throw new Error('Error updating topic');
-    //         }
-    //     } catch (error) {
-    //         console.error('Error updating topic:', error);
-    //     }
-    // };
+                await logEvent(`User ${user.name} removed ${topic} at ${new Date().toISOString()}`);
+            } else {
+                throw new Error('Error removing topic');
+            }
+        } catch (error) {
+            console.error('Error removing topic:', error);
+        }
+    };
 
     const closeModal = () => {
         setModalOpen(false);
@@ -277,7 +184,7 @@ const BettingPage = () => {
             <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 py-2">
                 <h1 className="text-3xl font-bold mb-4">Betting Page</h1>
                 <TopicList topics={topics} addTopic={addTopic} openModal={openModal} />
-                <MyTopicList myTopics={myTopics} openModal={openModal} />
+                <MyTopicList myTopics={myTopics} openModal={openModal} removeTopic={removeTopic} />
                 <Modal isOpen={modalOpen} onRequestClose={closeModal} style={modalStyles}>
                     {currentTopic && (
                         <div>

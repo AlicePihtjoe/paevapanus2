@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MyTopicList = ({ myTopics, openModal }) => {
+const MyTopicList = ({ myTopics, openModal, removeTopic }) => {
     return (
         <div className="w-full max-w-md bg-white rounded shadow-md p-4">
             <h2 className="text-2xl font-semibold mb-2">My Topics</h2>
