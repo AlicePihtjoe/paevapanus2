@@ -4,6 +4,7 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { NextApiRequest, NextApiResponse } from 'next';
+import fs from "fs";
 
 interface RequestBody {
     email: string;
@@ -12,6 +13,14 @@ interface RequestBody {
 }
 
 const prisma = new PrismaClient();
+
+
+const logToFile = (message) => {
+    console.log(`Logging: ${message}`);
+    fs.appendFile('pages/api/events.log', `${message}\n`, (err) => {
+        if (err) console.log('Error logging event:', err);
+    });
+};
 
 export default async function handler(
     req: NextApiRequest,
@@ -42,6 +51,9 @@ export default async function handler(
                 const newUser = await prisma.user.create({
                     data: { email, password: hashedPassword, name },
                 });
+
+                logToFile(`${newUser.email} signed up at ${new Date().toISOString()}`);
+
                 res.status(201).json(newUser);
             } catch (error) {
                 res.status(500).json({ message: error.message });

@@ -1,0 +1,78 @@
+/*.container {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    align-items: center;*/
+/*    justify-content: center;*/
+/*    padding: 20px;*/
+/*    font-family: Arial, sans-serif;*/
+/*    color: white;*/
+/*    width: 100%;*/
+/*    max-width: 800px; !* limits the width of the container to 800px *!*/
+/*    margin: auto; !* centers the container *!*/
+/*}*/
+
+.header {
+    color: #333;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    color: white;
+    width: 100%;
+    height: 100%;
+    max-width: 800px; /* Controls the width of the container */
+    margin: auto; /* Centers the container */
+}
+
+.tableContainer {
+    width: 100%; /* Full width of the parent .container */
+    height: calc(100vh - 100px); /* viewport height minus some space for headers */
+    overflow-y: scroll; /* Makes the div scrollable in y direction */
+    border-radius: 10px; /* Rounded corners */
+    overflow-x: hidden; /* Ensures the border-radius is applied to the table container */
+}
+
+.subHeader {
+    color: #666;
+}
+
+.table {
+    width: 100%;
+    border-collapse: separate; /* Needed for table border-radius to work */
+    border-spacing: 0; /* Removes the cell spacing */
+    border-radius: 10px 0 0 0; /* Gives the table rounded corners */
+    overflow: hidden; /* Ensures the border-radius is applied to the table */
+}
+
+.table th {
+    background-color: #333333;
+    border: 1px solid white;
+    padding: 8px;
+    text-align: left;
+    transition: background-color 0.3s ease;
+}
+
+.table th:hover {
+    background-color: #2a2a2a;
+}
+
+.table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    background-color: #416D79;
+    transition: background-color 0.3s ease;
+}
+
+.table td:hover {
+    background-color: #263F3F;
+}
+
+
+.errorText {
+    color: red;
+}

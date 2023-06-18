@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
 import { OAuth2Client } from 'google-auth-library';
+import fs from 'fs';
 
 interface RequestBody {
     email: string;
@@ -17,6 +18,14 @@ const client = new OAuth2Client({
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     redirectUri: 'https://localhost:3000/auth/google/callback',
 });
+
+const logToFile = (message) => {
+    console.log(`Logging: ${message}`);
+    fs.appendFile('pages/api/events.log', `${message}\n`, (err) => {
+        if (err) console.log('Error logging event:', err);
+    });
+};
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     const { method, body } = req;
@@ -67,6 +76,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                         path: '/',
                     }),
                 ]);
+
+                // Log the login event
+                logToFile(`User with email ${email} logged in at ${new Date().toISOString()}`);
+
 
                 // Return successful sign in message
                 res.status(200).json({ message: 'Logged in successfully', redirect: '/betting' });

@@ -10,10 +10,8 @@ function SignInForm() {
     });
 
     const [message, setMessage] = useState("");
-    const { setIsAuthenticated } = useAuth();
-
     const router = useRouter();
-
+    const { setIsAuthenticated } = useAuth();
     const handleChange = (event) => {
         setFormData({ ...formData, [event.target.name]: event.target.value });
     };
@@ -23,13 +21,14 @@ function SignInForm() {
 
         try {
             await axios.post("/api/signin", formData);
-            // Redirect to the betting page after successful login
             setIsAuthenticated(true);
+
+            // Redirect to the betting page after successful login
             await router.push("/betting");
 
             // After successful login
             setMessage("Logged in successfully!");
-
+            location.reload();
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.message;
             alert("Error logging in: " + errorMessage);

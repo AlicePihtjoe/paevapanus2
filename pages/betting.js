@@ -56,6 +56,17 @@ const BettingPage = () => {
     const [currentTopic, setCurrentTopic] = useState(null);
     const { isAuthenticated, isLoading, user } = useAuth();
 
+    const logEvent = async (message) => {
+        try {
+            await fetch('/api/log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message }),
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     const [topicDetails, setTopicDetails] = useState({
         'Football': 'Details about Football',
@@ -108,7 +119,7 @@ const BettingPage = () => {
         localStorage.setItem('topicDetails', JSON.stringify(topicDetails));
     }, [myTopics, topics, topicDetails]);
 
-    // Fetch topic details from server
+    // Fetch topic details from the server
 
     const getAllTopicDetails = async () => {
         try {
@@ -185,6 +196,7 @@ const BettingPage = () => {
                 const newTopic = await response.json();
                 socket.emit('new_topic', newTopic.name);
 
+                await logEvent(`User ${user.name} added a new topic ${newTopic.name} at ${new Date().toISOString()}`);
             } else {
                 throw new Error('Error creating topic');
             }
@@ -201,6 +213,7 @@ const BettingPage = () => {
             if (response.ok) {
                 socket.emit('remove_topic', topic);
 
+                await logEvent(`User ${user.name} removed ${topic} at ${new Date().toISOString()}`);
             } else {
                 throw new Error('Error removing topic');
             }
@@ -225,6 +238,7 @@ const BettingPage = () => {
                 const updatedTopic = await response.json();
                 console.log('Updated topic:', updatedTopic);
 
+                await logEvent(`User ${user.name} updated "${name}" description to "${updatedTopic.description}" at ${new Date().toISOString()}`);
 
             } else {
                 throw new Error('Error updating topic');
