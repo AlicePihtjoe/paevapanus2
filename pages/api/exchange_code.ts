@@ -3,8 +3,16 @@ import { google } from 'googleapis';
 import cookie from 'cookie';
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
+import fs from "fs";
 
 const prisma = new PrismaClient();
+
+const logToFile = (message) => {
+    console.log(`Logging: ${message}`);
+    fs.appendFile('pages/api/events.log', `${message}\n`, (err) => {
+        if (err) console.log('Error logging event:', err);
+    });
+};
 
 export default async function handler(
     req: NextApiRequest,
@@ -60,9 +68,11 @@ export default async function handler(
         },
     });
 
+    logToFile(`Google user with email ${user.email} logged in at ${new Date().toISOString()}`);
+
     // Sign a JWT for session management
     const sessionToken = jwt.sign(
-        { id: user.id, email: user.email },
+        { id: user.id, email: user.email, userId: user.id },
         process.env.JWT_SECRET as string
     );
 
