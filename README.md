@@ -40,8 +40,8 @@ For Google OAuth setup instructions, see file **GoogleOAuthSetup.md**
 
 ## Run the tests
 
-1. Start the development server: `node server.js`
-2. Run the tests: `npm test`
+1. Run the e2e tests: `npm test`
+2. Run unit tests: `npx jest`
 
 ## PivotalTracker link
 

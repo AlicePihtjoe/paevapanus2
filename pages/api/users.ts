@@ -1,10 +1,9 @@
 
-// POST /api/users
 
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { NextApiRequest, NextApiResponse } from 'next';
-import fs from "fs";
+import fs from 'fs';
 
 interface RequestBody {
     email: string;
@@ -12,19 +11,10 @@ interface RequestBody {
     name: string;
 }
 
-const prisma = new PrismaClient();
-
-
-const logToFile = (message) => {
-    console.log(`Logging: ${message}`);
-    fs.appendFile('pages/api/events.log', `${message}\n`, (err) => {
-        if (err) console.log('Error logging event:', err);
-    });
-};
-
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse
+    res: NextApiResponse,
+    prismaClient: PrismaClient = new PrismaClient()  // Default to a new PrismaClient
 ) {
     const { method, body } = req;
 
@@ -32,8 +22,8 @@ export default async function handler(
         case 'POST':
             try {
                 const { email, password, name } = body as RequestBody;
+                const existingUser = await prismaClient.user.findUnique({ where: { email } });
 
-                const existingUser = await prisma.user.findUnique({ where: { email } });
                 if (existingUser)
                     return res.status(400).json({ message: 'Email already exists' });
 
@@ -48,11 +38,11 @@ export default async function handler(
                 const hashedPassword = await bcrypt.hash(password, salt);
 
                 // Create user
-                const newUser = await prisma.user.create({
+                const newUser = await prismaClient.user.create({
                     data: { email, password: hashedPassword, name },
                 });
 
-                logToFile(`${newUser.email} signed up at ${new Date().toISOString()}`);
+                console.log(`${newUser.email} signed up at ${new Date().toISOString()}`);
 
                 res.status(201).json(newUser);
             } catch (error) {

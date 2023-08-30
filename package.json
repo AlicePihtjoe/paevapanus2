@@ -8,6 +8,7 @@
   },
   "scripts": {
     "test": "npx cypress open -b chrome --e2e",
+    "test:unit": "jest",
     "dev": "node server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.js"
@@ -40,9 +41,13 @@
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/cookie": "^0.5.1",
+    "@types/jest": "^29.5.4",
     "@types/jsonwebtoken": "^9.0.2",
+    "@types/node": "^20.5.1",
     "@types/react": "18.0.33",
+    "jest": "^29.6.2",
     "prisma": "^4.14.1",
+    "ts-jest": "^29.1.1",
     "typescript": "5.0.3"
   }
 }
