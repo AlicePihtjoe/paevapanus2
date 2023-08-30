@@ -42,6 +42,7 @@ For Google OAuth setup instructions, see file **GoogleOAuthSetup.md**
 
 1. Run the e2e tests: `npm test`
 2. Run unit tests: `npx jest`
+3. To see the Swagger documentation run the app and visit https://localhost:3000/api-docs
 
 ## PivotalTracker link
 

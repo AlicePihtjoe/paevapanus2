@@ -1,3 +1,86 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Topic:
+ *       type: object
+ *       required:
+ *         - name
+ *       properties:
+ *         name:
+ *           type: string
+ *         description:
+ *           type: string
+ *         userId:
+ *           type: integer
+ *         googleId:
+ *           type: integer
+ */
+
+/**
+ * @swagger
+ * /api/topics:
+ *   post:
+ *     summary: Create a new topic
+ *     tags: [Topics]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Topic'
+ *     responses:
+ *       201:
+ *         description: Topic successfully created
+ *       500:
+ *         description: Failed to create topic
+ *
+ *   delete:
+ *     summary: Delete a topic
+ *     tags: [Topics]
+ *     parameters:
+ *       - in: query
+ *         name: topic
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The topic name
+ *     responses:
+ *       200:
+ *         description: Topic successfully deleted
+ *       500:
+ *         description: Failed to delete topic
+ *
+ *   put:
+ *     summary: Update a topic
+ *     tags: [Topics]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Topic successfully updated
+ *       500:
+ *         description: Failed to update topic
+ *
+ *   get:
+ *     summary: Retrieve a list of topics
+ *     tags: [Topics]
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved list of topics
+ *       500:
+ *         description: Failed to retrieve topics
+ */
+
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
